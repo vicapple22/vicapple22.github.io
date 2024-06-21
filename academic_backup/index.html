@@ -1,83 +1,736 @@
-{% extends '_layout.swig' %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
-  {% block title %}{#
-  #}{% set page_title_suffix = ' | ' + title %}{#
 
-  #}{% if page.type === "categories" and not page.title %}{#
-    #}{{ __('title.category') + page_title_suffix }}{#
-  #}{% elif page.type === "tags" and not page.title %}{#
-    #}{{ __('title.tag') + page_title_suffix }}{#
-  #}{% else %}{#
-    #}{{ page.title + page_title_suffix }}{#
-  #}{% endif %}{#
-#}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {##################}
-    {### PAGE BLOCK ###}
-    {##################}
-    <div class="post-block page">
-      {% include '_partials/page-header.swig' %}
-      {#################}
-      {### PAGE BODY ###}
-      {#################}
-      <div class="post-body{% if theme.han %} han-init-context{% endif %}{% if page.direction && page.direction.toLowerCase() === 'rtl' %} rtl{% endif %}">
-        {# tagcloud page support #}
-        {% if page.type === "tags" %}
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                {% set visibleTags = 0 %}
-                {% for tag in site.tags %}
-                  {% if tag.length %}
-                    {% set visibleTags += 1 %}
-                  {% endif %}
-                {% endfor %}
-                {{ _p('counter.tag_cloud', visibleTags) }}
-            </div>
-            <div class="tag-cloud-tags">
-              {{ tagcloud({min_font: 12, max_font: 30, amount: 300, color: true, start_color: '#ccc', end_color: '#111'}) }}
-            </div>
-          </div>
-        {% elif page.type === 'categories' %}
-          <div class="category-all-page">
-            <div class="category-all-title">
-                {% set visibleCategories = 0 %}
-                {% for cat in site.categories %}
-                  {% if cat.length %}
-                    {% set visibleCategories += 1 %}
-                  {% endif %}
-                {% endfor %}
-                {{ _p('counter.categories', visibleCategories) }}
-            </div>
-            <div class="category-all">
-              {{ list_categories() }}
-            </div>
-          </div>
-        {% else %}
-          {{ page.content }}
-        {% endif %}
-      </div>
-      {#####################}
-      {### END PAGE BODY ###}
-      {#####################}
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="中文版 | English  我目前在腾讯微信工作。 我博士毕业于[清华大学自然语言处理组](http:&#x2F;&#x2F;nlp.csai.tsinghua.edu.cn&#x2F;site2&#x2F;)。我的导师是[孙茂松](http:&#x2F;&#x2F;nlp.csai.tsinghua.edu.cn&#x2F;site2&#x2F;index.php&#x2F;en&#x2F;people?id&#x3D;16)教授和[刘洋](http:&#x2F;&#x2F;nlp.csai.tsinghua.edu">
+<meta property="og:type" content="website">
+<meta property="og:title" content="沈世奇 (Shiqi Shen)">
+<meta property="og:url" content="http://shenshiqi.com/academic_backup/index.html">
+<meta property="og:site_name" content="沈世奇">
+<meta property="og:description" content="中文版 | English  我目前在腾讯微信工作。 我博士毕业于[清华大学自然语言处理组](http:&#x2F;&#x2F;nlp.csai.tsinghua.edu.cn&#x2F;site2&#x2F;)。我的导师是[孙茂松](http:&#x2F;&#x2F;nlp.csai.tsinghua.edu.cn&#x2F;site2&#x2F;index.php&#x2F;en&#x2F;people?id&#x3D;16)教授和[刘洋](http:&#x2F;&#x2F;nlp.csai.tsinghua.edu">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-07-01T00:06:08.000Z">
+<meta property="article:modified_time" content="2018-07-01T12:34:41.000Z">
+<meta property="article:author" content="沈世奇">
+<meta property="article:tag" content="沈世奇，shenshiqi，shiqi shen，清华大学，Tsinghua University，人工智能，AI，博士">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="http://shenshiqi.com/academic_backup/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>沈世奇 (Shiqi Shen) | 沈世奇</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沈世奇</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
-    {% include '_partials/breadcrumb.swig' %}
-    {######################}
-    {### END PAGE BLOCK ###}
-    {######################}
+    
+      
+        <p class="site-subtitle">和世界一起成长</p>
+      
+    
   </div>
 
-{% endblock %}
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-academic">
+    <a href="/academic/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-graduation-cap"></i> <br />学术主页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">沈世奇 (Shiqi Shen)</h1>
+
+<div class="post-meta">
+  
+  
+
+
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <p align="right">  <a href="index.html">中文版</a> | <a href="index_en.html">English</a> </p>
+我目前在腾讯微信工作。
+我博士毕业于[清华大学自然语言处理组](http://nlp.csai.tsinghua.edu.cn/site2/)。我的导师是[孙茂松](http://nlp.csai.tsinghua.edu.cn/site2/index.php/en/people?id=16)教授和[刘洋](http://nlp.csai.tsinghua.edu.cn/~ly/)副教授。
+我的主要研究兴趣是机器翻译和结合深度学习的自然语言处理。
+
+<p>Email:    vicapple22 [at] gmail.com</p>
+<h2 id="发表论文"><a href="#发表论文" class="headerlink" title="发表论文"></a>发表论文</h2><p><a href="https://scholar.google.com/citations?hl=zh-CN&user=e23-LKYAAAAJ&hl=en">谷歌学术引用</a></p>
+<ul>
+<li><em><strong>Shiqi Shen</strong></em>, Yang Liu, Maosong Sun. Optimizing Non-Decomposable Evaluation Metrics for Neural Machine Translation. 2017. In Journal of Computer Science and Technology (JCST). <a href="http://jcst.ict.ac.cn:8080/jcst/EN/abstract/abstract10053.shtml">[paper]</a></li>
+<li>Ayana, <em><strong>Shiqi Shen</strong></em>, Yankai Lin, Cunchao Tu, Yu Zhao, Zhiyuan Liu, Maosong Sun. 2017. Recent Advances on Neural Headline Generation. In Journal of Computer Science and Technology (JCST). <a href="http://jcst.ict.ac.cn:8080/jcst/EN/abstract/abstract10051.shtml">[paper]</a></li>
+<li>Jiacheng Zhang, Yanzhuo Ding, <em><strong>Shiqi Shen</strong></em>, Yong Cheng, Maosong Sun, Huanbo Luan, Yang Liu. 2017. THUMT: An Open Source Toolkit for Neural Machine Translation. arXiv:1706.06415. <a href="http://arxiv.org/abs/1706.06415">[arxiv]</a> <a href="https://github.com/thumt/THUMT">[code]</a></li>
+<li><em><strong>Shiqi Shen</strong></em>, Yong Cheng, Zhongjun He, Wei He, Hua Wu, Maosong Sun, and Yang Liu. 2016. Minimum Risk Training for Neural Machine Translation. In Proceedings of ACL 2016, Berlin, Germany, August. <a href="http://anthology.aclweb.org/P/P16/P16-1159.pdf">[paper]</a> <a href="/pdf/acl2016_mrt_slides.pdf">[slides]</a> <a href="http://arxiv.org/abs/1512.02433">[arxiv]</a> <a href="https://github.com/thumt/THUMT">[code]</a></li>
+<li>Yankai Lin, <em><strong>Shiqi Shen</strong></em>, Zhiyuan Liu, Huanbo Luan, and Maosong Sun. 2016. Neural Relation Extraction with Selective Attention over Instances. In Proceedings of ACL 2016, Berlin, Germany, August. <a href="http://www.aclweb.org/anthology/P16-1200">[paper]</a></li>
+<li>Yong Cheng, <em><strong>Shiqi Shen</strong></em>, Zhongjun He, Wei He, Hua Wu, Maosong Sun, and Yang Liu. 2016. Agreement-based Joint Training for Bidirectional Attention-based Neural Machine Translation. In Proceedings of IJCAI 2016, New York, USA, July. <a href="/pdf/ijcai16_agree.pdf">[paper]</a> <a href="http://arxiv.org/abs/1512.04650">[arXiv]</a></li>
+<li><em><strong>Shiqi Shen</strong></em>, Yang Liu, Huanbo Luan, and Maosong Sun. 2015. Consistency-Aware Search for Word Alignment. In Proceedings of EMNLP 2015, Lisbon, Portugal, September. <a href="http://anthology.aclweb.org/D/D15/D15-1144.pdf">[paper]</a></li>
+<li><em><strong>Shiqi Shen</strong></em>, Yang Liu, and Maosong Sun. 2013. A Dual Decomposition based Search Algorithm for Word Alignment. In Journal of Chinese Information Processing. <a href="/pdf/ssq_13.pdf">[paper]</a> (中文)</li>
+</ul>
+<h2 id="实习经历"><a href="#实习经历" class="headerlink" title="实习经历"></a>实习经历</h2><ul>
+<li>2016.7 - 2017.4: 搜狗公司 复合搜索研发部 机器翻译组 全职研究实习生<ul>
+<li>作为模型和算法负责人，从零开始搭建了<a href="http://translate.sogou.com/">搜狗翻译</a>在线系统。</li>
+</ul>
+</li>
+<li>2015.7 - 2016.4: 百度公司 自然语言处理部 机器翻译组 全职研究实习生<ul>
+<li>为神经网络机器翻译(百度翻译的核心算法)提出了一种新的训练准则，大幅提高了机器翻译的准确率。在公开测试集上最多取得了7.2 BLEU值的提高。</li>
+<li>研究成果应用于<a href="http://fanyi.baidu.com/">百度翻译</a>在线系统中。百度实习证明对所做工作的评价为“创新性”、“大幅提升翻译质量，业内反响热烈”</li>
+<li>相关成果发表于自然语言处理顶级会议ACL2016。论文被谷歌在线翻译系统引用并参考使用<a href="https://arxiv.org/abs/1609.08144">[链接]</a>, ACL2016神经网络机器翻译的<a href="http://nlp.stanford.edu/projects/nmt/Luong-Cho-Manning-NMT-ACL2016-v4.pdf">教程</a>和 NAACL2016 的<a href="http://www.hangli-hl.com/uploads/3/4/4/6/34465961/naacl_tutorial_version2.4.pdf">教程</a>都介绍了该论文。</li>
+</ul>
+</li>
+</ul>
+<h2 id="研究项目"><a href="#研究项目" class="headerlink" title="研究项目"></a>研究项目</h2><ul>
+<li>2015.1 - 2017.7: 国家863项目“类人答题机器人”<ul>
+<li>研究与开发高考语文题中文言文翻译相关题型的解答系统。</li>
+</ul>
+</li>
+<li>2012.2 - 2013.12: 国家863项目“互联网语言翻译系统研制”<ul>
+<li>完成自动词语对齐方法及系统研制，达到项目书中的准确率要求，完成技术验收报告。</li>
+<li>项目获2015年度国家科技进步二等奖、2014年度中国电子学会科技进步一等奖。</li>
+</ul>
+</li>
+</ul>
+<h2 id="教育经历"><a href="#教育经历" class="headerlink" title="教育经历"></a>教育经历</h2><ul>
+<li>2012.8 - 2017.7:   清华大学计算机科学与技术系工学博士</li>
+<li>2008.8 - 2012.7:   清华大学计算机科学与技术系工学学士</li>
+<li>2014.9 - 2014.10: 德国汉堡大学计算机系访问博士生</li>
+</ul>
+<h2 id="荣誉奖励"><a href="#荣誉奖励" class="headerlink" title="荣誉奖励"></a>荣誉奖励</h2><ul>
+<li>2017年清华大学计算机系优秀博士毕业生</li>
+<li>2016年清华大学博士生综合优秀奖学金（Top 5%）</li>
+<li>YCCL2012会议最佳论文提名奖</li>
+<li>2012年清华大学计算机系优秀毕业生（Top 10%）</li>
+<li>2011年清华大学本科生综合优秀奖学金（Top 10%）</li>
+<li>2010年清华大学清锋明辨校园辩论赛冠军</li>
+<li>2007年全国物理奥林匹克竞赛银牌</li>
+</ul>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+
+
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ssq.jpg"
+                alt="沈世奇" />
+            
+              <p class="site-author-name" itemprop="name">沈世奇</p>
+              <p class="site-description motion-element" itemprop="description">和世界一起成长</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E8%A1%A8%E8%AE%BA%E6%96%87"><span class="nav-number">1.</span> <span class="nav-text">发表论文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%B9%A0%E7%BB%8F%E5%8E%86"><span class="nav-number">2.</span> <span class="nav-text">实习经历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A0%94%E7%A9%B6%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">研究项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%99%E8%82%B2%E7%BB%8F%E5%8E%86"><span class="nav-number">4.</span> <span class="nav-text">教育经历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8D%A3%E8%AA%89%E5%A5%96%E5%8A%B1"><span class="nav-number">5.</span> <span class="nav-text">荣誉奖励</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沈世奇</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v7.2.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://shenshiqi.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://shenshiqi.com/academic_backup/index.html';
+        this.page.identifier = 'academic_backup/index.html';
+        this.page.title = '沈世奇 (Shiqi Shen)';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://shenshiqi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
